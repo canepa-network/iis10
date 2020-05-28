@@ -349,7 +349,7 @@ param(
 $drive = 'D',
 [int]$size = 10
 )
-    Write-Output -Message "Starting Setup: [$($drive):\]"
+    Write-Output "Starting Setup: $($drive):\"
 
         # Make Room for new Partition
         $Par = Get-Partition | Where-Object { $_.DriveLetter -eq "$((Get-Location).Drive.Name)" } | Select-Object -Property *
@@ -370,6 +370,6 @@ $drive = 'D',
             $null = Get-PSDrive
             Start-Sleep -Seconds 1
         }until($test -eq $true)
-        Write-Output -Message "Setup Complete"
+        Write-Output "Setup Complete"
 }
 
