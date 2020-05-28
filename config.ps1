@@ -356,12 +356,12 @@ Write-Verbose -Message "Starting Setup For: $($drive)"
         $Disk = $($Par.DiskNumber)
         $ID = $($Par.PartitionNumber)
         $New = [math]::round(($Par.Size - ([int64][scriptblock]::Create("$size" + 'Gb').Invoke()[0])))
-        Resize-Partition -DiskNumber "$Disk" -PartitionNumber $ID -Size $New | Out-Null
+        $null = Resize-Partition -DiskNumber "$Disk" -PartitionNumber $ID -Size $New | Out-Null
 
         # Format New Partition
-        $Null = New-Partition -DiskNumber $Disk -UseMaximumSize -AssignDriveLetter:$False | Format-Volume -FileSystem 'NTFS' -NewFileSystemLabel 'iis' -confirm:$False
+        $null = New-Partition -DiskNumber $Disk -UseMaximumSize -AssignDriveLetter:$False | Format-Volume -FileSystem 'NTFS' -NewFileSystemLabel 'iis' -confirm:$False
         $NewPar = Get-Partition | Where-Object { ($_.IsBoot -ne $True) -and ($_.IsSystem -ne $True) -and (-not $_.DriveLetter) } | Select-Object *
-        Set-Partition -DiskNumber $($NewPar.DiskNumber) -PartitionNumber $NewPar.PartitionNumber -NewDriveLetter "$drive"
+        $null = Set-Partition -DiskNumber $($NewPar.DiskNumber) -PartitionNumber $NewPar.PartitionNumber -NewDriveLetter "$drive"
         Do {
             $test = $False
             if (Test-Path "${drive}:\") {
