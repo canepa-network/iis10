@@ -386,6 +386,7 @@ $drive = 'D',
         $null = New-Partition -DiskNumber $Disk -UseMaximumSize -AssignDriveLetter:$False | Format-Volume -FileSystem 'NTFS' -NewFileSystemLabel 'iis' -confirm:$False
         $NewPar = Get-Partition | Where-Object { ($_.IsBoot -ne $True) -and ($_.IsSystem -ne $True) -and (-not $_.DriveLetter) } | Select-Object *
         $null = Set-Partition -DiskNumber $($NewPar.DiskNumber) -PartitionNumber $NewPar.PartitionNumber -NewDriveLetter "$drive"
+        Update-Disk -Number $($NewPar.DiskNumber)
         Do {
             $test = $False
             if (Test-Path "${drive}:\") {
