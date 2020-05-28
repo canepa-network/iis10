@@ -1,3 +1,36 @@
+# iis config script
+
+$DefaultFeatures = @(
+        "Web-Server",
+        "Web-WebServer",
+        "Web-Common-Http",
+        "Web-Dir-Browsing",
+        "Web-Http-Errors",
+        "Web-Http-Redirect",
+        "Web-Health",
+        "Web-Http-Logging",
+        "Web-Custom-Logging",
+        "Web-Http-Tracing",
+        "Web-Performance",
+        "Web-Stat-Compression",
+        "Web-Dyn-Compression",
+        "Web-Security",
+        "Web-Filtering",
+        "Web-App-Dev",
+        "Web-Net-Ext45",
+        "Web-Asp-Net45",
+        "Web-ISAPI-Ext",
+        "Web-ISAPI-Filter",
+        "Web-WebSockets",
+        "Web-Basic-Auth",
+        "Web-Windows-Auth",
+        "Web-Client-Auth",
+        "Web-Mgmt-Tools",
+        "Web-Mgmt-Console",
+        "Web-Url-Auth",
+        "Web-Scripting-Tools"
+    )
+
 function setup-ssl (){
  # Visit (https://www.hass.de/content/setup-microsoft-windows-or-iis-ssl-perfect-forward-secrecy-and-tls-12) For Info:
 
@@ -314,21 +347,21 @@ $drive = 'D'
 function setup-drive (){
 param(
 $drive = 'D',
-$size = '10'
+[int]$size = 10
 )
 Write-Verbose -Message "Starting Setup For: $($drive)"
 
         # Make Room for new Partition
-        [psobject]$Par = Get-Partition | Where-Object { $_.DriveLetter -eq "$((Get-Location).Drive.Name)" } | Select-Object -Property *
-        [psobject]$Disk = $($Par.DiskNumber)
-        [psobject]$ID = $($Par.PartitionNumber)
-        [psobject]$New = [math]::round(($Par.Size - ([int64][scriptblock]::Create($size + 'Gb').Invoke()[0])))
+        $Par = Get-Partition | Where-Object { $_.DriveLetter -eq "$((Get-Location).Drive.Name)" } | Select-Object -Property *
+        $Disk = $($Par.DiskNumber)
+        $ID = $($Par.PartitionNumber)
+        $New = [math]::round(($Par.Size - ([int64][scriptblock]::Create("$size" + 'Gb').Invoke()[0])))
         Resize-Partition -DiskNumber "$Disk" -PartitionNumber $ID -Size $New | Out-Null
 
         # Format New Partition
         New-Partition -DiskNumber $Disk -UseMaximumSize -AssignDriveLetter:$False | Format-Volume -FileSystem 'NTFS' -NewFileSystemLabel 'iis' -confirm:$False
-        [psobject]$NewPar = Get-Partition | Where-Object { $_.NoDefaultDriveLetter -eq $True } | Where-Object { $_.Type -ne 'Recovery' } | Select-Object -Property *
-        Set-Partition -DiskNumber $($NewPar.DiskNumber) -PartitionNumber $NewPar.PartitionNumber -NewDriveLetter $drive
+        $NewPar = Get-Partition | Where-Object { ($_.IsBoot -ne $True) -and ($_.IsSystem -ne $True) -and (-not $_.DriveLetter) } | Select-Object *
+        Set-Partition -DiskNumber $($NewPar.DiskNumber) -PartitionNumber $NewPar.PartitionNumber -NewDriveLetter "$drive"
         Do {
             $test = $False
             if (Test-Path "${drive}:\") {
