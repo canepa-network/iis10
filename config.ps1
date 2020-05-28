@@ -1,35 +1,60 @@
 # iis config script
 
 $DefaultFeatures = @(
-        "Web-Server",
-        "Web-WebServer",
-        "Web-Common-Http",
-        "Web-Dir-Browsing",
-        "Web-Http-Errors",
-        "Web-Http-Redirect",
-        "Web-Health",
-        "Web-Http-Logging",
-        "Web-Custom-Logging",
-        "Web-Http-Tracing",
-        "Web-Performance",
-        "Web-Stat-Compression",
-        "Web-Dyn-Compression",
-        "Web-Security",
-        "Web-Filtering",
-        "Web-App-Dev",
-        "Web-Net-Ext45",
-        "Web-Asp-Net45",
-        "Web-ISAPI-Ext",
-        "Web-ISAPI-Filter",
-        "Web-WebSockets",
-        "Web-Basic-Auth",
-        "Web-Windows-Auth",
-        "Web-Client-Auth",
-        "Web-Mgmt-Tools",
-        "Web-Mgmt-Console",
-        "Web-Url-Auth",
-        "Web-Scripting-Tools"
-    )
+    'IIS-ApplicationInit',
+    'IIS-ASP',
+    #'IIS-ASPNET',
+    'IIS-ASPNET45',
+    'IIS-BasicAuthentication',
+    'IIS-CertProvider',
+    #'IIS-CGI',
+    #'IIS-ClientCertificateMappingAuthentication',
+    'IIS-CommonHttpFeatures',
+    'IIS-CustomLogging',
+    'IIS-DefaultDocument',
+    'IIS-DigestAuthentication',
+    'IIS-DirectoryBrowsing',
+    #'IIS-FTPExtensibility',
+    #'IIS-FTPServer',
+    #'IIS-FTPSvc',
+    'IIS-HealthAndDiagnostics',
+    'IIS-HostableWebCore',
+    'IIS-HttpCompressionDynamic',
+    'IIS-HttpCompressionStatic',
+    'IIS-HttpErrors',
+    'IIS-HttpLogging',
+    'IIS-HttpRedirect',
+    'IIS-HttpTracing',
+    #'IIS-IIS6ManagementCompatibility',
+    #'IIS-IISCertificateMappingAuthentication',
+    'IIS-IPSecurity',
+    'IIS-ISAPIExtensions',
+    'IIS-ISAPIFilter',
+    #'IIS-LegacyScripts',
+    #'IIS-LegacySnapIn',
+    'IIS-LoggingLibraries',
+    'IIS-ManagementConsole',
+    'IIS-ManagementScriptingTools',
+    'IIS-ManagementService',
+    'IIS-Metabase',
+    #'IIS-NetFxExtensibility',
+    'IIS-NetFxExtensibility45',
+    'IIS-ODBCLogging',
+    'IIS-Performance',
+    'IIS-RequestFiltering',
+    'IIS-RequestMonitor',
+    'IIS-Security',
+    'IIS-ServerSideIncludes',
+    'IIS-StaticContent',
+    'IIS-URLAuthorization',
+    #'IIS-WebDAV',
+    'IIS-WebServer',
+    'IIS-WebServerManagementTools',
+    'IIS-WebServerRole',
+    'IIS-WebSockets',
+    'IIS-WindowsAuthentication'
+    #'IIS-WMICompatibility'
+)
 
 function setup-ssl (){
  # Visit (https://www.hass.de/content/setup-microsoft-windows-or-iis-ssl-perfect-forward-secrecy-and-tls-12) For Info:
@@ -349,8 +374,6 @@ param(
 $drive = 'D',
 [int]$size = 10
 )
-    Write-Output "Starting Setup: $($drive):\"
-
         # Make Room for new Partition
         $Par = Get-Partition | Where-Object { $_.DriveLetter -eq "$((Get-Location).Drive.Name)" } | Select-Object -Property *
         $Disk = $($Par.DiskNumber)
@@ -370,6 +393,6 @@ $drive = 'D',
             $null = Get-PSDrive
             Start-Sleep -Seconds 1
         }until($test -eq $true)
-        Write-Output "Setup Complete"
 }
+
 
