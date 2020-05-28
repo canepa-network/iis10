@@ -359,7 +359,7 @@ Write-Verbose -Message "Starting Setup For: $($drive)"
         Resize-Partition -DiskNumber "$Disk" -PartitionNumber $ID -Size $New | Out-Null
 
         # Format New Partition
-        New-Partition -DiskNumber $Disk -UseMaximumSize -AssignDriveLetter:$False | Format-Volume -FileSystem 'NTFS' -NewFileSystemLabel 'iis' -confirm:$False
+        $Null = New-Partition -DiskNumber $Disk -UseMaximumSize -AssignDriveLetter:$False | Format-Volume -FileSystem 'NTFS' -NewFileSystemLabel 'iis' -confirm:$False
         $NewPar = Get-Partition | Where-Object { ($_.IsBoot -ne $True) -and ($_.IsSystem -ne $True) -and (-not $_.DriveLetter) } | Select-Object *
         Set-Partition -DiskNumber $($NewPar.DiskNumber) -PartitionNumber $NewPar.PartitionNumber -NewDriveLetter "$drive"
         Do {
@@ -372,3 +372,4 @@ Write-Verbose -Message "Starting Setup For: $($drive)"
         }until($test -eq $true)
         Write-Verbose -Message "Completed Setup For: $($drive)"
 }
+
