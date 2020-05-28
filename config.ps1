@@ -1,6 +1,7 @@
-# iis config script
+# iis-10 config
 
 $DefaultFeatures = @(
+# (Get-WindowsOptionalFeature -Online | Where-Object {$_.FeatureName -like "IIS*"}).FeatureName | sort | foreach $_ {"'$($_)',"}
     'IIS-ApplicationInit',
     'IIS-ASP',
     #'IIS-ASPNET',
