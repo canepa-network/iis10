@@ -500,7 +500,3 @@ $Default_WinFeature = (
     'IIS-WindowsAuthentication'
     #'IIS-WMICompatibility'
 )
-
-Export-ModuleMember `
-    -Function ("Update-Registry", "Update-SSL", "New-Partition", "Move-IIS") `
-    -Variable $Default_WinFeature
