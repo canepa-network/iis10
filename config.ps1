@@ -444,7 +444,7 @@ function Move-IIS () {
     & iisreset /start | Out-Null
 }
 
-$Default_WinFeature = @(
+$Default_WinFeature = (
     # (Get-WindowsOptionalFeature -Online | Where-Object {$_.FeatureName -like "IIS*"}).FeatureName | sort | foreach $_ {"'$($_)',"}
     'IIS-ApplicationInit',
     'IIS-ASP',
@@ -500,3 +500,7 @@ $Default_WinFeature = @(
     'IIS-WindowsAuthentication'
     #'IIS-WMICompatibility'
 )
+
+Export-ModuleMember `
+    -Function ("Update-Registry", "Update-SSL", "New-Partition", "Move-IIS") `
+    -Variable $Default_WinFeature
