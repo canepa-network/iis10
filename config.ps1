@@ -444,7 +444,7 @@ function Move-IIS () {
     & iisreset /start | Out-Null
 }
 
-$Default_WinFeature = (
+New-Variable 'iis-features' -Value [string[]](
     # (Get-WindowsOptionalFeature -Online | Where-Object {$_.FeatureName -like "IIS*"}).FeatureName | sort | foreach $_ {"'$($_)',"}
     'IIS-ApplicationInit',
     'IIS-ASP',
