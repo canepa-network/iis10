@@ -1,4 +1,4 @@
-function IIS.BuildConfig 
+function IIS.BuildConfig {
     param(
         [string]$path
     )
