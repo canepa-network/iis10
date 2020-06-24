@@ -1,4 +1,7 @@
-function IIS.BuildConfig {
+function IIS.BuildConfig 
+    param(
+        [string]$path
+    )
     function Get-STIGViewer {
         param(
             [string]$search,
@@ -52,17 +55,13 @@ function IIS.BuildConfig {
     $config += "[PSCustomObject]@{"
     foreach ($_ in $STIG) {
         $config += "    '$($_.ID)' = @{"
-        $config += "        Reference = '$($_.Details)'"
-        $config += "        Get       = [scriptblock] {`n"
-        $config += "        }"
-        $config += "        Test      = [scriptblock] {`n"
-        $config += "        }"
-        $config += "        Set       = [scriptblock] {`n"
+        $config += "        # '$($_.Details)'"
+        $config += "        Fix       = [scriptblock] {`n"
         $config += "        }"
         $config += "    }"
     }
     $config += "}"
-    $config | Out-File -Encoding 'utf8' "$PSScriptRoot\config.ps1"
+    $config | Out-File -Encoding 'utf8' "$path\config.ps1"
 }
 # . ".\config\helper.ps1"
 # IIS.BuildConfig
